@@ -1,0 +1,5 @@
+buildout/
+source/tagg.egg-info
+.installed.cfg
+bootstrap-buildout.py
+*.pyc
