@@ -1,18 +1,10 @@
 # Tagg
 
-A tool to handle your mp3 collection
+A tool to handle my mp3 collection
 
 ## Requirements
 
 - Python 3
-
-## Installation
-
-TODO
-
-## Usage
-
-TODO
 
 ## Development
 
@@ -28,9 +20,11 @@ Run:
 ./buildout/bin/tagg
 ```
 
-## Contributing
+Build:
 
-Fork and clone, create a feature branch, make and push your changes, send a pull request.
+```sh
+make build
+```
 
 ## License
 
