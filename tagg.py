@@ -360,3 +360,7 @@ def main():
         exitcode = 0
 
     sys.exit(exitcode)
+
+
+if __name__ == '__main__':
+    main()

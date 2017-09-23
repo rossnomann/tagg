@@ -1,4 +1,4 @@
-.PHONY: clean setup
+.PHONY: build clean setup
 
 BOOTSTRAP_URL = https://bootstrap.pypa.io/bootstrap-buildout.py
 
@@ -11,6 +11,12 @@ buildout: bootstrap-buildout.py
 setup: buildout
 	./buildout/bin/buildout
 
+build: buildout
+	./buildout/bin/pyinstaller -F tagg.py
+
 clean:
 	rm -f ./bootstrap-buildout.py
 	rm -rf ./buildout
+	rm -rf ./build
+	rm -rf ./dist
+	rm tagg.spec

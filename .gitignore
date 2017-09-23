@@ -1,5 +1,8 @@
+build/
 buildout/
+dist/
 tagg.egg-info
 .installed.cfg
 bootstrap-buildout.py
 *.pyc
+*.spec
