@@ -26,6 +26,12 @@ Build:
 make build
 ```
 
+## Changelog
+
+0.1.0 (24.09.2017)
+
+- First release.
+
 ## License
 
 The MIT License (MIT)
