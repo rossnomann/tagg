@@ -62,7 +62,11 @@ class ID3Reader(object):
             else:
                 item_type = None
 
-            result = str(self.__tags[ID3_FRAMES_MAP[item]])
+            frame_name = ID3_FRAMES_MAP[item]
+            try:
+                result = str(self.__tags[frame_name])
+            except KeyError:
+                result = ''
 
             if result and item_type:
                 parts = result.split('/')
