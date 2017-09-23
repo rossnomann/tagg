@@ -2,6 +2,8 @@
 
 A tool to handle my mp3 collection
 
+[![asciicast](https://asciinema.org/a/ANaoLiSWILkIL8IAfbpUfgsZM.png)](https://asciinema.org/a/ANaoLiSWILkIL8IAfbpUfgsZM)
+
 ## Requirements
 
 - Python 3
