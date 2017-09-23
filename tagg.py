@@ -16,6 +16,9 @@ from prompt_toolkit.validation import Validator, ValidationError
 from pygments.token import Token
 
 
+__version__ = '0.1.0'
+
+
 ID3_FRAMES_MAP = {
     'artist': 'TPE1',
     'album_artist': 'TPE2',
@@ -372,6 +375,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-s', '--source', help='Source directory', default='.')
     parser.add_argument('-d', '--dest', help='Destination directory', default='res')
+    parser.add_argument('--version', action='version', version='%(prog)s {}'.format(__version__))
     args = parser.parse_args()
 
     source = os.path.abspath(args.source)
