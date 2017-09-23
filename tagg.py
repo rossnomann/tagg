@@ -12,6 +12,7 @@ from prompt_toolkit.contrib.completers import WordCompleter
 from prompt_toolkit.history import InMemoryHistory
 from prompt_toolkit.shortcuts import print_tokens
 from prompt_toolkit.styles import style_from_dict
+from prompt_toolkit.validation import Validator, ValidationError
 from pygments.token import Token
 
 
@@ -156,6 +157,19 @@ def get_items_tags(tags):
     }
 
 
+class RequiredValidator(Validator):
+    def validate(self, document):
+        if not document.text:
+            raise ValidationError(message='Value is required')
+
+
+class DigitValidator(RequiredValidator):
+    def validate(self, document):
+        super().validate(document)
+        if not document.text.isdigit():
+            raise ValidationError(message='Accepts numeric characters only')
+
+
 class CLI(object):
     def __init__(self):
         self.style = style_from_dict({
@@ -195,13 +209,19 @@ class CLI(object):
                 (Token.Space, ' ')
             ]
 
+        if 'number' in tag_name or 'total' in tag_name:
+            validator = DigitValidator()
+        else:
+            validator = RequiredValidator()
+
         return self.__prompt(
             auto_suggest=self.__tags_suggest,
             completer=self.__tags_completer,
             default=default_value,
             get_prompt_tokens=get_prompt_tokens,
             history=self.__tags_history,
-            style=self.style
+            style=self.style,
+            validator=validator
         )
 
     def edit_tags(self, data):
