@@ -10,6 +10,9 @@ setup(
     license='MIT',
     py_modules=['tagg'],
     install_requires=[
+        'Pygments',
+        'mutagen',
+        'prompt_toolkit'
     ],
     entry_points={
         'console_scripts': [
