@@ -1,0 +1,10 @@
+[package]
+name = "tagg"
+version = "0.2.0"
+authors = ["Ross Nomann <rossnomann@protonmail.com>"]
+edition = "2018"
+
+[dependencies]
+ape = "0.3.0"
+id3 = "0.5.1"
+rustyline = "7.0.0"
