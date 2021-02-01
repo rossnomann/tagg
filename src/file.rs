@@ -99,13 +99,15 @@ impl From<(PathBuf, &AlbumOutput, TrackOutput)> for FileOutput {
 impl FileOutput {
     pub fn write(self) -> Result<PathBuf, FileOutputError> {
         ape::remove(&self.path).map_err(FileOutputError::RemoveApe)?;
-        let mut file = OpenOptions::new()
-            .read(true)
-            .write(true)
-            .open(&self.path)
-            .map_err(FileOutputError::OpenFile)?;
-        Id3V1Tag::remove(&mut file).map_err(FileOutputError::RemoveId3V1)?;
-        Id3V2Tag::remove_from(&mut file).map_err(FileOutputError::RemoveId3V2)?;
+        {
+            let mut file = OpenOptions::new()
+                .read(true)
+                .write(true)
+                .open(&self.path)
+                .map_err(FileOutputError::OpenFile)?;
+            Id3V1Tag::remove(&mut file).map_err(FileOutputError::RemoveId3V1)?;
+            Id3V2Tag::remove_from(&mut file).map_err(FileOutputError::RemoveId3V2)?;
+        }
         let mut tag = Id3V2Tag::new();
         tag.add_frame(Id3Frame::with_content("TPE1", Id3FrameContent::Text(self.artist)));
         tag.add_frame(Id3Frame::with_content("TPE2", Id3FrameContent::Text(self.album_artist)));
@@ -126,7 +128,7 @@ impl FileOutput {
             "TPOS",
             Id3FrameContent::Text(format!("{:02}/{:02}", self.disc_number, self.total_discs)),
         ));
-        tag.write_to(file, Id3Version::Id3v24)
+        tag.write_to_path(&self.path, Id3Version::Id3v24)
             .map_err(FileOutputError::WriteId3V2)?;
 
         let number = if self.total_discs > 1 {
