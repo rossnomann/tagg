@@ -27,10 +27,15 @@ pub struct FileInput {
 }
 
 impl FileInput {
-    pub fn from_path(path: impl AsRef<Path>) -> Result<Self, Id3Error> {
+    pub fn from_path(path: impl AsRef<Path>) -> Self {
         let path = path.as_ref();
-        let tag = Id3V2Tag::read_from_path(path)?;
-        Ok(Self {
+        let tag = match Id3V2Tag::read_from_path(path) {
+            Ok(tag) => tag,
+            Err(_) => {
+                return Self::empty(path);
+            }
+        };
+        Self {
             path: path.to_owned(),
             artist: tag.artist().map(ToOwned::to_owned),
             album_artist: tag.album_artist().map(ToOwned::to_owned),
@@ -41,7 +46,22 @@ impl FileInput {
             total_tracks: tag.total_tracks(),
             disc_number: tag.disc(),
             total_discs: tag.total_discs(),
-        })
+        }
+    }
+
+    fn empty(path: impl AsRef<Path>) -> Self {
+        Self {
+            path: path.as_ref().to_owned(),
+            artist: None,
+            album_artist: None,
+            album: None,
+            year: None,
+            title: None,
+            track_number: None,
+            total_tracks: None,
+            disc_number: None,
+            total_discs: None,
+        }
     }
 }
 

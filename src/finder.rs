@@ -1,5 +1,4 @@
 use crate::file::FileInput;
-use id3::Error as Id3Error;
 use std::{
     error::Error,
     fmt, fs,
@@ -26,7 +25,7 @@ pub fn find(path: impl AsRef<Path>) -> Result<Vec<FileInput>, FindError> {
         {
             continue;
         }
-        result.push(FileInput::from_path(&entry_path).map_err(|err| FindError::ReadTags(entry_path, err))?)
+        result.push(FileInput::from_path(&entry_path))
     }
     if result.is_empty() {
         Err(FindError::NoTracks)
@@ -40,7 +39,6 @@ pub enum FindError {
     NoTracks,
     ReadDir(PathBuf, IoError),
     ReadEntry(IoError),
-    ReadTags(PathBuf, Id3Error),
 }
 
 impl fmt::Display for FindError {
@@ -50,7 +48,6 @@ impl fmt::Display for FindError {
             NoTracks => write!(out, "no tracks found"),
             ReadDir(path, err) => write!(out, "failed to read a directory {}: {}", path.display(), err),
             ReadEntry(err) => write!(out, "failed to read an entry: {}", err),
-            ReadTags(path, err) => write!(out, "failed to read tags from {}: {}", path.display(), err),
         }
     }
 }
@@ -62,7 +59,6 @@ impl Error for FindError {
             NoTracks => return None,
             ReadDir(_, err) => err,
             ReadEntry(err) => err,
-            ReadTags(_, err) => err,
         })
     }
 }
